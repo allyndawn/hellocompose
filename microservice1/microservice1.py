@@ -12,7 +12,7 @@ client = boto3.resource('sqs',
 queue = client.get_queue_by_name(QueueName='devicemessage')
 
 if __name__ == "__main__":
-    print("started microservice1.py")
+    print("started microservice1.py", flush=True)
 
     while True:
         print("sending message", flush=True)
