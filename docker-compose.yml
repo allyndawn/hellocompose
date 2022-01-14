@@ -1,5 +1,13 @@
 version: '3'
 services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile.app
+    microservice1:
+        build:
+            context: .
+            dockerfile: Dockerfile.microservice1
     elasticmq:
         build:
             context: .
