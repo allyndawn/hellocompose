@@ -1,4 +1,5 @@
 import boto3
+import json
 import mariadb
 import sys
 import time
@@ -48,7 +49,7 @@ cur = conn.cursor()
 try:
     query = """\
         CREATE TABLE IF NOT EXISTS devices(
-            device_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            device_id BIGINT NOT NULL PRIMARY KEY,
             device_name VARCHAR(100) NOT NULL
         )
         """
@@ -57,13 +58,32 @@ try:
 except mariadb.Error as e:
     print(f"Error: {e}")
 
-conn.close()
-
 if __name__ == "__main__":
     print("started microservice1.py", flush=True)
 
     while True:
         for message in queue.receive_messages(WaitTimeSeconds=1):
             print('received {0}'.format(message.body), flush=True)
+            message_body = json.loads(message.body)
             message.delete()
+
+            query = """\
+                INSERT INTO devices (device_id, device_name)
+                VALUES (%s, %s)
+                ON DUPLICATE KEY UPDATE device_name=%s
+                """
+            val = (message_body["device_id"], message_body["device_name"], message_body["device_name"])
+            try:
+                cur.execute(query, val)
+            except mariadb.Error as e:
+                print(f"Error: {e}")
+
+            print("now the database contains", flush=True)
+
+            cur.execute("SELECT device_id, device_name FROM devices")
+            for (device_id, device_name) in cur:
+                print(f"Successfully retrieved {device_id}, {device_name}", flush=True)
+
         time.sleep(1)
+
+# TODO close on exit
