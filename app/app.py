@@ -1,4 +1,5 @@
 import boto3
+import json
 import time
 
 # Note: dummy values for aws_secret_access_key and aws_access_key_id are needed
@@ -14,8 +15,16 @@ queue = client.get_queue_by_name(QueueName='devicemessage')
 if __name__ == "__main__":
     print("started app.py", flush=True)
 
+    device_updates=[
+        { "device_id": 4257912359, "device_name": "Allen Phone" },
+        { "device_id": 4254180648, "device_name": "Fox Phone" },
+        { "device_id": 4257912359, "device_name": "Panda Phone" },
+    ]
+
+    for device_update in device_updates:
+        message_body = json.dumps(device_update)
+        queue.send_message(MessageBody=message_body)
+        time.sleep(1)
+
     while True:
-        for message in queue.receive_messages(WaitTimeSeconds=1):
-            print('received {0}'.format(message.body), flush=True)
-            message.delete()
         time.sleep(1)

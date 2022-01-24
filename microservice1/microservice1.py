@@ -63,6 +63,7 @@ if __name__ == "__main__":
     print("started microservice1.py", flush=True)
 
     while True:
-        print("sending message", flush=True)
-        queue.send_message(MessageBody='hello from the microservice')
+        for message in queue.receive_messages(WaitTimeSeconds=1):
+            print('received {0}'.format(message.body), flush=True)
+            message.delete()
         time.sleep(1)
