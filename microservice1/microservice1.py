@@ -44,6 +44,21 @@ print("Connected to database successfully", flush=True)
 # Get Cursor
 cur = conn.cursor()
 
+# Create our table for storing things
+try:
+    query = """\
+        CREATE TABLE IF NOT EXISTS devices(
+            device_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            device_name VARCHAR(100) NOT NULL
+        )
+        """
+    cur.execute(query)
+    print("Created devices table successuflly")
+except mariadb.Error as e:
+    print(f"Error: {e}")
+
+conn.close()
+
 if __name__ == "__main__":
     print("started microservice1.py", flush=True)
 
