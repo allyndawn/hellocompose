@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS `pandabase`;
+GRANT ALL ON *.* TO 'test_user'@'%' WITH GRANT OPTION;

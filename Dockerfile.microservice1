@@ -1,5 +1,7 @@
 FROM python:3-alpine
 
+RUN apk add --no-cache mariadb-dev build-base
+
 COPY microservice1 /microservice1
 
 WORKDIR /microservice1

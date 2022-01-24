@@ -10,6 +10,8 @@ Multiple docker containers managed by Docker Compose
 - Initially, I had to set up the repo
 
 `python3 -m venv .venv`
+
+- And then, looks like on each start up
 `source .venv/bin/activate`
 `python -m pip install --upgrade pip`
 

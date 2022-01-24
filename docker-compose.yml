@@ -8,7 +8,20 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.microservice1
+        depends_on:
+            - db
     elasticmq:
         build:
             context: .
             dockerfile: Dockerfile.queue
+    db:
+        build:
+            context: .
+            dockerfile: Dockerfile.db
+        ports:
+            - 3306:3306
+        command: ["mysqld", "--sql-mode=NO_ENGINE_SUBSTITUTION,ALLOW_INVALID_DATES"]
+        environment:
+            MYSQL_ROOT_PASSWORD: test_user
+            MYSQL_USER: test_user
+            MYSQL_PASSWORD: test_user

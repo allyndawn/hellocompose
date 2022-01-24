@@ -1,0 +1,5 @@
+FROM library/mariadb:10.2
+
+COPY init_db.sql /docker-entrypoint-initdb.d/
+
+CMD ["mysqld", "--sql-mode=NO_ENGINE_SUBSTITUTION,ALLOW_INVALID_DATES"]
