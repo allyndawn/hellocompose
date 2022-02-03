@@ -25,3 +25,9 @@ services:
             MYSQL_ROOT_PASSWORD: test_user
             MYSQL_USER: test_user
             MYSQL_PASSWORD: test_user
+    nodeapp:
+        build:
+            context: .
+            dockerfile: Dockerfile.nodeapp
+        ports:
+            - 8080:8080
